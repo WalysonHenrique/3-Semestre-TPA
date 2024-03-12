@@ -10,6 +10,18 @@ struct aluno{
     int matricula;
 };
 
+typedef struct celula Celula;
+struct celula{
+    Celula* prox;
+    Celula* ant;
+    Aluno* item;
+};
+
+typedef struct lista Lista;
+struct lista{
+    Celula* prim;
+    Celula* ult;
+};
 Aluno* criaAluno(char* nome, int matricula){
     Aluno* novoAluno = (Aluno*)malloc(sizeof(Aluno));
     novoAluno -> matricula = matricula;
@@ -31,17 +43,7 @@ void exclui(Aluno* aluno){
     free(aluno);
 }
 
-typedef struct celula Celula;
-struct celula{
-    Celula* prox;
-    Aluno* item;
-};
 
-typedef struct lista Lista;
-struct lista{
-    Celula* prim;
-    Celula* ult;
-};
 
 //função que inicializa a lista vazia
 Lista* iniciaLista(){
@@ -93,11 +95,12 @@ int retiraAluno(Lista* lista, char* nomePassado){
 //imprime a lista
 void imprimeLista(Lista* lista){
     Celula* atual = lista->prim;
-    while (atual != NULL)
+    do
     {
         imprimir(atual->item);
         atual = atual->prox;
-    }
+    } while (atual != lista->prim);
+    
 }
 
 void libera(Lista* lista){
