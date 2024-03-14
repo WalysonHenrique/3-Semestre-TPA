@@ -1,4 +1,4 @@
-    #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -54,20 +54,50 @@ Lista* iniciaLista(){
 }
 
 //inserir um novo aluno na ultima posicao da lista
-Lista* inserirAluno(Lista* lista, Aluno* novoAluno){
+Lista* inserirAlunoUlt(Lista* lista, Aluno* novoAluno){
     //cria uma nova celula
     Celula* novaCelula = (Celula*)malloc(sizeof(Celula));
     novaCelula->item = novoAluno;
     novaCelula->prox = NULL;
     //verifica se a lista esta vazia
     if(lista->ult == NULL){
+        //aponta o primeiro ponteiro para a nova celula
         lista->prim = novaCelula;
+        //aponta o ultimo ponteiro para a nova celula
         lista->ult = novaCelula;
         return lista;
     }
     else{
+        //aponta o ponteiro prox da ultima celula para a nova celula, antes ele apontava para null
         lista->ult->prox = novaCelula;
+        //aponta o ponteiro ultimo para essa nova celula
         lista->ult = novaCelula;
+        return lista;
+    }
+}
+
+// insere um aluno na primeira posiçao da lista
+Lista* inserirAlunoPri(Lista* lista, Aluno* novoAluno){
+    //cria uma nova celula
+    Celula* novaCelula = (Celula*)malloc(sizeof(Celula));
+    novaCelula->item = novoAluno;
+    novaCelula->prox = NULL;
+    novaCelula->ant = NULL;
+    //verifica se a lista esta vazia
+    if(lista->ult == NULL){
+        //aponta o primeiro ponteiro para a nova celula
+        lista->prim = novaCelula;
+        //aponta o ultimo ponteiro para a nova celula
+        lista->ult = novaCelula;
+        return lista;
+    }
+    else{
+        //aponta o ponteiro ant da celula existente para a nova celula;
+        lista->prim->ant = novaCelula;
+        //aponta o ponteiro prox para a primeira celula que ja existia
+        novaCelula->prox = lista->prim;
+        //aponta o ponteiro ultimo para essa nova celula
+        lista->prim = novaCelula;
         return lista;
     }
 }
