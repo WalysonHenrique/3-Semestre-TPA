@@ -75,18 +75,36 @@ Lista* inserirAluno(Lista* lista, Aluno* novoAluno){
 int retiraAluno(Lista* lista, char* nomePassado){
     Celula* atual = lista->prim;
 
+    if(strcmp(atual->item->nome, nomePassado)==0){
+            exclui(atual->item);
+            lista->prim = lista->prim->prox;
+            if(lista->prim == NULL){
+                lista->ult = NULL;
+            }
+            free(atual);
+            return 0;
+        }
+
     while (atual != NULL)
     {
         //compara o nome que esta dentro da lista com o
         //nome fornecido por parametro
-        if (strcmp(atual->item->nome, nomePassado)==0)
+        
+
+        if (strcmp(atual->prox->item->nome, nomePassado)==0)
         {
-            exclui(atual->item);
-            free(atual);
+            exclui(atual->prox->item);
+            Celula* aux = atual->prox;
+            atual->prox = atual->prox->prox;
+            free(aux);
+
+            if(atual->prox == NULL) lista->ult = atual;
+            return 0;
         }
         
         atual = atual->prox;
     }
+    return 1;
     
 }
 
