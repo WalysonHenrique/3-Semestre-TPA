@@ -71,34 +71,52 @@ Lista* inserirAluno(Lista* lista, Aluno* novoAluno){
 }
 
 
-//retira aluno por nome
+//retira aluno por nome;
 int retiraAluno(Lista* lista, char* nomePassado){
     Celula* atual = lista->prim;
 
+    //verifica se o nome passado é igual ao nome apontado por atual;
+    //se o nome buscado for o primeiro;
     if(strcmp(atual->item->nome, nomePassado)==0){
+            //se for, ele exclui os itens;
             exclui(atual->item);
+            //aponta o prim para prox;
             lista->prim = lista->prim->prox;
+            //se o prim for null;
+            //aponta o ultimo para null tambem;
             if(lista->prim == NULL){
                 lista->ult = NULL;
             }
+            //libera a celula atual;
             free(atual);
+            //e retorna 0, finalizando a função;
             return 0;
         }
 
+
+    //caso o nome buscado nao seja o primeiro;
     while (atual != NULL)
     {
-        //compara o nome que esta dentro da lista com o
-        //nome fornecido por parametro
+        //compara o nome que esta dentro da lista com o;
+        //nome fornecido por parametro;
         
 
+        //verifica se o item da proxima celula apontada por atual é o nome buscado;
         if (strcmp(atual->prox->item->nome, nomePassado)==0)
         {
+            //exclui os itens;
             exclui(atual->prox->item);
+            //cria um ponteiro para celula auxiliar que armazena a posição do proximo;
             Celula* aux = atual->prox;
+            //aponta a celula do proximo para o proximo cel1-> cel2-> cel3-> ;
+            //                                          cel1-> -----> cel3->;
             atual->prox = atual->prox->prox;
+            //libera a celula atual;
             free(aux);
-
+            //verifica se o ponteiro prox da celula atual esta apontando para null;
+            //se estiver ele aponta o ponteiro ult para atual;
             if(atual->prox == NULL) lista->ult = atual;
+            //retorna 0 para finalizar a fun;
             return 0;
         }
         
