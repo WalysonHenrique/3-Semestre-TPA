@@ -1,4 +1,4 @@
-    #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -10,10 +10,11 @@ struct aluno{
     int matricula;
 };
 
-Aluno* criaAluno(char* nome, int matricula){
+Aluno* criaAluno(char* nomePassado, int matricula){
     Aluno* novoAluno = (Aluno*)malloc(sizeof(Aluno));
     novoAluno -> matricula = matricula;
-    novoAluno -> nome = nome;
+        novoAluno->nome = strdup(nomePassado);
+
     return novoAluno;
 }
 
@@ -27,8 +28,8 @@ void imprimir(Aluno* item){
     printf("Nome : %sMatricula: %i\n", recuperarNome(item), item->matricula);
 }
 
-void exclui(Aluno* aluno){
-    free(aluno);
+void exclui(Aluno* item){
+    free(item);
 }
 
 typedef struct celula Celula;
@@ -52,7 +53,7 @@ Lista* iniciaLista(){
 }
 
 //inserir um novo aluno na ultima posicao da lista
-Lista* inserirAluno(Lista* lista, Aluno* novoAluno){
+Lista* insereAluno(Lista* lista, Aluno* novoAluno){
     //cria uma nova celula
     Celula* novaCelula = (Celula*)malloc(sizeof(Celula));
     novaCelula->item = novoAluno;
@@ -72,74 +73,64 @@ Lista* inserirAluno(Lista* lista, Aluno* novoAluno){
 
 
 //retira aluno por nome;
-int retiraAluno(Lista* lista, char* nomePassado){
+int retiraAluno(Lista* lista, char* nomePassado) {
     Celula* atual = lista->prim;
+    Celula* anterior = NULL;
 
-    //verifica se o nome passado é igual ao nome apontado por atual;
-    //se o nome buscado for o primeiro;
-    if(strcmp(atual->item->nome, nomePassado)==0){
-            //se for, ele exclui os itens;
-            exclui(atual->item);
-            //aponta o prim para prox;
-            lista->prim = lista->prim->prox;
-            //se o prim for null;
-            //aponta o ultimo para null tambem;
-            if(lista->prim == NULL){
-                lista->ult = NULL;
-            }
-            //libera a celula atual;
-            free(atual);
-            //e retorna 0, finalizando a função;
-            return 0;
+    // Verifica se a lista está vazia
+    if (atual == NULL) {
+        return 1; // Lista vazia, nada a fazer
+    }
+
+    // Verifica se o primeiro aluno da lista é o procurado
+    if (strcmp(atual->item->nome, nomePassado) == 0) {
+        lista->prim = atual->prox; // Atualiza o ponteiro do primeiro aluno
+        if (lista->ult == atual) {
+            lista->ult = NULL; // Se a lista tinha apenas um aluno
         }
+        exclui(atual->item); // Libera a memória do aluno
+        free(atual); // Libera a memória da célula
+        return 0; // Aluno removido com sucesso
+    }
 
-
-    //caso o nome buscado nao seja o primeiro;
-    while (atual != NULL)
-    {
-        //compara o nome que esta dentro da lista com o;
-        //nome fornecido por parametro;
-        
-
-        //verifica se o item da proxima celula apontada por atual é o nome buscado;
-        if (strcmp(atual->prox->item->nome, nomePassado)==0)
-        {
-            //exclui os itens;
-            exclui(atual->prox->item);
-            //cria um ponteiro para celula auxiliar que armazena a posição do proximo;
-            Celula* aux = atual->prox;
-            //aponta a celula do proximo para o proximo cel1-> cel2-> cel3-> ;
-            //                                          cel1-> -----> cel3->;
-            atual->prox = atual->prox->prox;
-            //libera a celula atual;
-            free(aux);
-            //verifica se o ponteiro prox da celula atual esta apontando para null;
-            //se estiver ele aponta o ponteiro ult para atual;
-            if(atual->prox == NULL) lista->ult = atual;
-            //retorna 0 para finalizar a fun;
-            return 0;
-        }
-        
+    // Percorre a lista em busca do aluno
+    while (atual != NULL && strcmp(atual->item->nome, nomePassado) != 0) {
+        anterior = atual;
         atual = atual->prox;
     }
-    return 1;
-    
+
+    // Se o aluno não foi encontrado
+    if (atual == NULL) {
+        return 1; // Aluno não encontrado
+    }
+
+    // Remove o aluno da lista
+    anterior->prox = atual->prox;
+    if (atual == lista->ult) {
+        lista->ult = anterior;
+    }
+    exclui(atual->item); // Libera a memória do aluno
+    free(atual); // Libera a memória da célula
+    return 0; // Aluno removido com sucesso
 }
+
 
 //imprime a lista
 void imprimeLista(Lista* lista){
     Celula* atual = lista->prim;
     while (atual != NULL)
     {
+        //printf("Nome : (%s)\nMatricula : %d\n", atual->item->nome, atual->item->matricula);
         imprimir(atual->item);
+        printf("=================================\n");
         atual = atual->prox;
     }
 }
 
-void libera(Lista* lista){
+void liberaLista(Lista* lista){
     free(lista);
 }
-
+/*
 
 int main(){
     Lista* minhaLista;
@@ -160,4 +151,4 @@ int main(){
     imprimeLista(minhaLista);
 
     return 0;
-}
+}*/
