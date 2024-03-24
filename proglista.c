@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "ListaSimplesmenteEncadeada.c" // use o nome do arquivo que você implementou
+#include "ListaDuplamenteEncadeada.c" // use o nome do arquivo que você implementou
 
 int main(){
     int op = 0, matricula;
@@ -27,7 +27,7 @@ int main(){
             scanf(" %d", &matricula);
 
             //aluno = criaAluno(nome, matricula);
-            lista = insereAluno(lista, criaAluno(nome, matricula));
+            lista = insereAlunoPri(lista, criaAluno(nome, matricula));
             
             break;
         

@@ -62,6 +62,7 @@ Pilha* insereAluno(Pilha* pilha, Aluno* novoAluno){
 Aluno* pop(Pilha* pilha){
     Celula* itemSalvo;
     Celula* celulaAtual = pilha->topo;
+    
     itemSalvo = celulaAtual->item;
 
     pilha->topo = pilha->topo->prox;

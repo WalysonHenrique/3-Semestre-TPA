@@ -25,7 +25,7 @@ struct lista{
 Aluno* criaAluno(char* nome, int matricula){
     Aluno* novoAluno = (Aluno*)malloc(sizeof(Aluno));
     novoAluno -> matricula = matricula;
-    novoAluno -> nome = nome;
+    novoAluno -> nome = strdup(nome);
     return novoAluno;
 }
 
@@ -54,11 +54,12 @@ Lista* iniciaLista(){
 }
 
 //inserir um novo aluno na ultima posicao da lista
-Lista* inserirAlunoUlt(Lista* lista, Aluno* novoAluno){
+Lista* insereAlunoUlt(Lista* lista, Aluno* novoAluno){
     //cria uma nova celula
     Celula* novaCelula = (Celula*)malloc(sizeof(Celula));
     novaCelula->item = novoAluno;
     novaCelula->prox = NULL;
+    novaCelula->ant = NULL;
     //verifica se a lista esta vazia
     if(lista->ult == NULL){
         //aponta o primeiro ponteiro para a nova celula
@@ -70,14 +71,17 @@ Lista* inserirAlunoUlt(Lista* lista, Aluno* novoAluno){
     else{
         //aponta o ponteiro prox da ultima celula para a nova celula, antes ele apontava para null
         lista->ult->prox = novaCelula;
+        //aponta o ponteiro ant para a ultima celula
+        novaCelula->ant = lista->ult;
         //aponta o ponteiro ultimo para essa nova celula
         lista->ult = novaCelula;
+        
         return lista;
     }
 }
 
 // insere um aluno na primeira posiçao da lista
-Lista* inserirAlunoPri(Lista* lista, Aluno* novoAluno){
+Lista* insereAlunoPri(Lista* lista, Aluno* novoAluno){
     //cria uma nova celula
     Celula* novaCelula = (Celula*)malloc(sizeof(Celula));
     novaCelula->item = novoAluno;
@@ -106,55 +110,87 @@ Lista* inserirAlunoPri(Lista* lista, Aluno* novoAluno){
 //retira aluno por nome
 int retiraAluno(Lista* lista, char* nomePassado){
     Celula* atual = lista->prim;
+    Celula* celulaAnterior = NULL;
 
-    while (atual != NULL)
+    //verifica se a lista esta vazia
+    if(atual == NULL)
     {
-        //compara o nome que esta dentro da lista com o
-        //nome fornecido por parametro
-        if (strcmp(atual->item->nome, nomePassado)==0)
-        {
-            exclui(atual->item);
-            free(atual);
+        return 1;
+    }
+
+    //verifica se o aluno buscado e o primeiro da lista
+    if(strcmp(atual->item->nome, nomePassado)==0){
+
+        //aponta o pont prim para a prox celula, que se torna a nova primeira celula
+        lista->prim = lista->prim->prox;
+
+        //verifica se a celula era unica na lista
+        if(lista->ult == atual){
+            lista->ult = NULL;
         }
-        
+        free(atual->item);
+        free(atual);
+        return 0;
+    }
+
+
+    //caso ele nao seja o primeiro :
+
+    while (atual != NULL && strcmp(atual->item->nome, nomePassado)!=0)
+    {
+        celulaAnterior = atual;
         atual = atual->prox;
     }
+    
+
+    //se o aluno nao foi encontrado
+    if(atual == NULL)
+    {
+        return 1; 
+    }
+
+    //caso ele esteja no meio da lista
+    if(atual->prox != NULL){
+
+    //aponta o prox do anterior para o proximo pulando a celula atual
+    atual->ant->prox = atual->prox;
+
+    //aponta o ponteiro ant do proximo para o anterior pulando o atual
+    atual->prox->ant = atual->ant;
+
+    //libera os itens
+    free(atual->item);
+    free(atual);
+    return 0;
+    }
+
+    //caso ele seja o ultimo da lista
+    if(atual->prox == NULL)
+    {
+        lista->ult = atual->ant;
+        atual->ant->prox = NULL;
+        free(atual->item);
+        free(atual);
+    }
+
+
     
 }
 
 //imprime a lista
 void imprimeLista(Lista* lista){
     Celula* atual = lista->prim;
-    do
+    while (atual != NULL)
     {
+        // printf("Nome : (%s)\nMatricula : %d\n", atual->item->nome, atual->item->matricula);
         imprimir(atual->item);
+        printf("=================================\n");
         atual = atual->prox;
-    } while (atual != lista->prim);
+    }
+    
     
 }
 
-void libera(Lista* lista){
+void liberaLista(Lista* lista){
     free(lista);
-}
-
-
-int main(){
-    Lista* minhaLista;
-    char* nome;
-    int matricula;
-
-    minhaLista = iniciaLista();
-
-    printf("Digite primeiro o nome do aluno\n");
-    fgets(nome, 20, stdin);
-    printf("Digite agora a matricula\n");
-    scanf("%d", &matricula);
-
-    //criaAluno retorna o aluno criado que serve de parametro para a fun inserirAluno
-    //que insere esse aluno na lista
-    inserirAluno(minhaLista, criaAluno(nome, matricula));
-
-    imprimeLista(minhaLista);
-
-    return 0;
 }
