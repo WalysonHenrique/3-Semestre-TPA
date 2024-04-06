@@ -25,10 +25,11 @@ struct lista{
 
 
 
+//Questão 6 ############################################################
+/*
 int ordenada(Lista* lista)
 {
-    int verificador = 1;
-    
+   
     if(lista->prim = NULL){
         return 0;
     }
@@ -36,7 +37,6 @@ int ordenada(Lista* lista)
     Celula* maior = lista->prim;
     Celula* atual = lista->prim->prox;
     
-
     while (atual != NULL)
     {
         if(atual->item->numeros < maior->item->numeros)
@@ -48,3 +48,31 @@ int ordenada(Lista* lista)
     }
     return 1;
 }
+*/
+
+//Questão 7 ############################################################
+/*
+Lista* inverter(Lista* lista){
+    Celula* atual = lista->prim;
+    Lista* lista2;
+    if(lista->prim = NULL){
+        return 1;
+    }
+    while (atual != NULL)
+    {
+        Celula* novaCelula = (Lista*)malloc(sizeof(Lista));
+        novaCelula->item = atual->item;
+        novaCelula->prox = NULL;
+
+        if(lista2->prim == NULL){
+            lista2->prim = novaCelula;
+            lista2->ult = novaCelula;
+        }else{
+            novaCelula->prox = lista2->prim;
+            lista2->prim = novaCelula;
+        }
+        atual = atual->prox;
+    }
+    return lista2;
+}
+*/
