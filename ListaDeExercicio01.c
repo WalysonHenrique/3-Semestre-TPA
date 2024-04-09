@@ -61,7 +61,7 @@ int ordenada(Lista* lista)
 /*
 Lista* inverter(Lista* lista){
     Celula* atual = lista->prim;
-    Lista* lista2;
+    Lista* lista2 = (Lista*)malloc(sizeof(Lista));
     if(lista->prim = NULL){
         return 1;
     }
@@ -88,10 +88,10 @@ Lista* inverter(Lista* lista){
 //Questão 8 ############################################################
 
 Fila* intercala(Fila* f1, Fila* f2) {
-    // Verifica se uma das filas está vazia
+    // Verifica se uma das filas esta vazia
     if (f1->prim == NULL || f2->prim == NULL) {
         printf("\nUma das filas está vazia\n");
-        return NULL;
+        return 1;
     }
 
     // Inicializa a fila F3
@@ -114,7 +114,8 @@ Fila* intercala(Fila* f1, Fila* f2) {
         novaCelula1->item = auxF1->item;
         novaCelula1->prox = NULL;
         if (f3->ult == NULL) {
-            f3->prim = f3->ult = novaCelula1;
+            f3->prim = novaCelula1;
+            f3->ult = novaCelula1;
         } else {
             f3->ult->prox = novaCelula1;
             f3->ult = novaCelula1;
@@ -143,12 +144,8 @@ Fila* intercala(Fila* f1, Fila* f2) {
         }
         novaCelula->item = auxF1->item;
         novaCelula->prox = NULL;
-        if (f3->ult == NULL) {
-            f3->prim = f3->ult = novaCelula;
-        } else {
-            f3->ult->prox = novaCelula;
-            f3->ult = novaCelula;
-        }
+        f3->ult->prox = novaCelula;
+        f3->ult = novaCelula;
         auxF1 = auxF1->prox;
     }
 
