@@ -13,7 +13,7 @@ int binarySearch()
     //enquanto 
     while (e < d - 1)
     {
-        //e = -1 ↓            m↓        key↓              10 ↓d
+        //e = -1 ↓                m↓    key↓              10 ↓d
         //        {1} {2} {3} {4} {5} {6} {7} {8} {9} {11}
 
         
