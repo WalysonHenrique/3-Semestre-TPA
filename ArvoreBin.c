@@ -40,9 +40,30 @@ void imprime(Arv* a){
   }
 }
 
-// Imprime as informações dos nós da árvore
-// void arv_imprime(Arv* a);
 
-void arv_preordem (Arv* a);
-void arv_inordem (Arv* a);
-void arv_posordem (Arv* a);
+
+//aqui o programa imprime a raiz primeiro depois a esquerda e por fim a direita
+void arv_preordem(Arv* a) {
+
+    if (a != NULL) {
+        printf("%c ", a->info);    
+        arv_preordem(a->esq);   
+        arv_preordem(a->dir);    
+    }
+}
+//aqui o programa imprime primeiro a esquerda depois a raiz e por fim a direita
+void arv_inordem(Arv* a) {
+    if (a != NULL) {
+        arv_inordem(a->esq);    
+        printf("%c ", a->info);    
+        arv_inordem(a->dir);     
+    }
+}
+//aqui o programa imprime primeiro a esquerda depois a direita e por ultimo a raiz
+void arv_posordem(Arv* a) {
+    if (a != NULL) {
+        arv_posordem(a->esq);   
+        arv_posordem(a->dir);    
+        printf("%c ", a->info);     
+    }
+}
