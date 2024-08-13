@@ -64,7 +64,7 @@ int arv_vazia(Arv *a)
   return (a == NULL);
 }
 
-// Libera o espaço de memória ocupado pela árvore
+
 Arv *arv_libera(Arv *a)
 {
   if (a != NULL)
@@ -76,7 +76,7 @@ Arv *arv_libera(Arv *a)
   return NULL;
 }
 
-// Imprime as informações de um nó da árvore
+
 void imprime(Arv *a)
 {
   if (!arv_vazia(a))
@@ -120,26 +120,27 @@ void arv_posordem(Arv *a)
 Arv* removeNo(Arv* arv, int numero) {
 
     if (arv == NULL) {
-        return NULL;  // Caso base: o número não foi encontrado na árvore.
+        return NULL; 
     }
 
-    // Se o número a ser removido é menor que o número do nó atual, vá para a subárvore esquerda.
+
+    //caso o num a ser removido seja menor q o no atual, ele vai pra sub arv esquerda
     if (numero < arv->numero) {
         arv->esq = removeNo(arv->esq, numero);
     }
-    // Se o número a ser removido é maior que o número do nó atual, vá para a subárvore direita.
+    //caso o num a ser removido seja maior q o no atual, vai para sub arv direita
     else if (numero > arv->numero) {
         arv->dir = removeNo(arv->dir, numero);
     }
-    // O número foi encontrado. Agora é necessário remover este nó.
+
     else {
-        // Caso 1: o nó não tem filhos (é uma folha).
+        //caso ele seja uma folha
         if (arv->esq == NULL && arv->dir == NULL) {
             free(arv);
             return NULL;
         }
 
-        // Caso 2: o nó tem apenas um filho (esquerda ou direita).
+        //caso tenha um filho
         else if (arv->esq == NULL) {
             Arv* temp = arv->dir;
             free(arv);
@@ -151,18 +152,18 @@ Arv* removeNo(Arv* arv, int numero) {
             return temp;
         }
 
-        // Caso 3: o nó tem dois filhos.
+        //caso tenha 2 filhos
         else {
-            // Encontra o sucessor in-order (o menor nó da subárvore direita).
+            
             Arv* temp = arv->dir;
             while (temp->esq != NULL) {
                 temp = temp->esq;
             }
 
-            // Copia o valor do sucessor in-order para o nó atual.
+            
             arv->numero = temp->numero;
 
-            // Remove o sucessor in-order da subárvore direita.
+            
             arv->dir = removeNo(arv->dir, temp->numero);
         }
     }
